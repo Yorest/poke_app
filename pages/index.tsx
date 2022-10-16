@@ -18,7 +18,7 @@ const HomePage: NextPage<Props> = ({ pokemons }) => {
       <Layout title="Listado de Pokemons">
         <Grid.Container gap={2} justify="flex-start">
           {pokemons.map(({ id, name, img, type, height, hp, weight }) => (
-            <Grid key={id} xs={6} sm={4} md={3} xl={3}>
+            <Grid key={id} xs={12} sm={6} md={4} xl={4}>
               <Card
                 isHoverable
                 isPressable
@@ -49,11 +49,11 @@ const HomePage: NextPage<Props> = ({ pokemons }) => {
 
                     <Row gap={1} justify="center" align="center">
                       <Text
-                        size="$3xl"
+                        size="$4xl"
                         weight="bold"
                         color="#000"
-                        transform="capitalize"
-                        css={{ m: 0 }}
+                                     transform="capitalize"
+                        css={{ m: 0, letterSpacing: "normal" }}
                       >
                         {name}
                       </Text>
