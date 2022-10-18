@@ -28,7 +28,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
     <Layout title={`${pokemon.name}`}>
       <Grid.Container alignItems="center" direction="column">
 
-        <Grid xs={10} sm={5} md={4} xl={3} css={{ marginTop: "20px",width: "100%", marginBottom: '-70px' }}>
+        <Grid xs={12} sm={5} md={4} xl={3} css={{ marginTop: "20px",width: "100%", marginBottom: '-70px' }}>
           <Grid.Container>
             <Container               
               css={{ width: "100%" }}
@@ -55,7 +55,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
         </Grid>
 
         <Grid
-          xs={10}
+          xs={12}
           sm={5}
           md={4}
           xl={3}
@@ -114,7 +114,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         size={"$2xl"}
                         css={{ display: "flex", justifyContent: "center" }}
                       >
-                        {pokemon.weight}
+                        {`${pokemon.weight} lb`}
                       </Text>
                       <Text
                         color="#9BA1A6"
@@ -135,7 +135,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         size={"$2xl"}
                         css={{ display: "flex", justifyContent: "center" }}
                       >
-                        {pokemon.height}
+                        {`${pokemon.height}"`}
                       </Text>
                       <Text
                         color="#9BA1A6"
