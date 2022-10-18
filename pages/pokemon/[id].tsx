@@ -162,9 +162,9 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text css={{flexGrow: 4}} transform="capitalize" color="#787F85">{stat.name}</Text>
+                      <Text css={{width:'40%'}} transform="capitalize" color="#787F85">{stat.name}</Text>
                       <Spacer />
-                      <Text css={{flexGrow: 1}} color="#787F85">{base_stat}</Text>
+                      <Text css={{width:'10%'}} color="#787F85">{base_stat}</Text>
                       <Spacer />
                       <Progress css={{flexGrow: 1,width:'50%'}} size="sm" color="gradient" value={base_stat} max={200} />
                     </Grid>
@@ -188,7 +188,11 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
             </Container>
             
             <Spacer/>
-            <Container css={{display: 'flex'}}>
+            <Container
+              display="flex"
+              alignItems="center"
+              justify="space-between"
+            >
               <Image
                 src={pokemon.sprites.front_default}
                 alt={`front_default-${pokemon.name}`}
