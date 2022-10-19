@@ -30,8 +30,7 @@ interface Props {
   pokemon: IPokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {
-  console.log(pokemon);
+const PokemonPage: NextPage<Props> = ({ pokemon }) => {  
 
   return (
     <Layout title={`${pokemon.name}`}>
@@ -300,7 +299,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                           css={{}}
                           >
                             <Image
-                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
                             
                             width={70}
                             height={70}
@@ -334,7 +333,9 @@ function evolutionChain(
 
   evolutionChainList.push({ id, name: chain.species.name });
   if (chain.evolves_to.length > 0) {
-    evolutionChain(chain.evolves_to[0], evolutionChainList);
+    chain.evolves_to.forEach((chain)=>{  
+      evolutionChain(chain, evolutionChainList);
+    })
   }
 
   return evolutionChainList;
