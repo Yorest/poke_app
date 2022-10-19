@@ -7,16 +7,23 @@ import {
   Progress,
   Spacer,
   Text,
+  Tooltip,
 } from "@nextui-org/react";
 import { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { type } from "os";
 import React from "react";
 import { pokeApi } from "../../api";
 
 import { Layout } from "../../components/layouts";
-import { IPokemon } from "../../interfaces/pokemon";
+import {
+  IPokemonSpecies,
+  IpokemonChain,
+  IPokemon,
+  Chain,
+  IevolutionChainList,
+} from "../../interfaces";
+
 import { pokeColorsType } from "../../utils/colors";
 
 interface Props {
@@ -24,32 +31,59 @@ interface Props {
 }
 
 const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+  console.log(pokemon);
+
   return (
     <Layout title={`${pokemon.name}`}>
       <Grid.Container alignItems="center" direction="column">
-
-        <Grid xs={12} sm={5} md={4} xl={3} css={{ marginTop: "20px",width: "100%", marginBottom: '-70px' }}>
+        <Grid
+          xs={12}
+          sm={5}
+          md={4}
+          xl={3}
+          css={{ marginTop: "20px", width: "100%", marginBottom: "-70px" }}
+        >
           <Grid.Container>
-            <Container               
+            <Container
               css={{ width: "100%" }}
               display="flex"
               justify="space-between"
-              alignItems="center">
-                <Link href={'/'}>                  
-
-                    <Image src={`/left-arrow.svg`}  alt="left-arrow" width={20} height={20} color="white" />                
-
-                  </Link>
-                <Button auto>Favorito</Button>
+              alignItems="center"
+            >
+              <Link href={"/"}>
+                <a>
+                  <Button
+                    auto
+                    color="gradient"
+                    rounded
+                    bordered
+                    ghost
+                    icon={
+                      <Image
+                        src={`/left-arrow.svg`}
+                        alt="left-arrow"
+                        width={20}
+                        height={20}
+                        color="white"
+                      />
+                    }
+                  >
+                    Back
+                  </Button>
+                </a>
+              </Link>
+              <Button auto color="gradient" rounded bordered ghost>
+                Favorito
+              </Button>
             </Container>
-            <Spacer/>
+            <Spacer />
             <Container display="flex" justify="center">
               <Image
-                  src={pokemon.sprites.other?.dream_world.front_default || ""}
-                  alt={`pokemon-${pokemon.name}`}
-                  width={250}
-                  height={250}
-                />
+                src={pokemon.sprites.other?.dream_world.front_default || ""}
+                alt={`pokemon-${pokemon.name}`}
+                width={250}
+                height={250}
+              />
             </Container>
           </Grid.Container>
         </Grid>
@@ -114,7 +148,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         size={"$2xl"}
                         css={{ display: "flex", justifyContent: "center" }}
                       >
-                        {`${pokemon.weight} lb`}
+                        {`${pokemon.weight / 10} Kg`}
                       </Text>
                       <Text
                         color="#9BA1A6"
@@ -135,7 +169,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         size={"$2xl"}
                         css={{ display: "flex", justifyContent: "center" }}
                       >
-                        {`${pokemon.height}"`}
+                        {`${pokemon.height / 10} m`}
                       </Text>
                       <Text
                         color="#9BA1A6"
@@ -150,44 +184,69 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
             </Container>
 
             <Container>
-              <Text weight={'bold'} size={'$xl'} color={"#000"}>Stats</Text>
+              <Text weight={"bold"} size={"$xl"} color={"#000"}>
+                Stats
+              </Text>
 
-                {
-                  pokemon.stats.map(({stat,base_stat})=>(
-                      <Grid
-                      key={stat.name}
-                      css={{
-                        display: "flex",                      
-                        alignItems: "center",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <Text css={{width:'40%'}} transform="capitalize" color="#787F85">{stat.name}</Text>
-                      <Spacer />
-                      <Text css={{width:'10%'}} color="#787F85">{base_stat}</Text>
-                      <Spacer />
-                      <Progress css={{flexGrow: 1,width:'50%'}} size="sm" color="gradient" value={base_stat} max={200} />
-                    </Grid>
-                  ))
-                }
-
+              {pokemon.stats.map(({ stat, base_stat }) => (
+                <Grid
+                  key={stat.name}
+                  css={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    css={{ width: "40%" }}
+                    transform="capitalize"
+                    color="#787F85"
+                  >
+                    {stat.name}
+                  </Text>
+                  <Spacer />
+                  <Text css={{ width: "10%" }} color="#787F85">
+                    {base_stat}
+                  </Text>
+                  <Spacer />
+                  <Progress
+                    css={{ flexGrow: 1, width: "50%" }}
+                    size="sm"
+                    color="gradient"
+                    value={base_stat}
+                    max={200}
+                  />
+                </Grid>
+              ))}
             </Container>
 
             <Container>
-              <Spacer/>
-              <Text weight={'bold'} size={'$xl'} color={"#000"}>Abilities</Text>
+              <Spacer />
+              <Text weight={"bold"} size={"$xl"} color={"#000"}>
+                Abilities
+              </Text>
               <Grid.Container gap={1}>
-                {
-                    pokemon.abilities.map(({ability: {name}})=>(
-                        <Grid key={name}>
-                          <Badge size={'xs'} variant="flat"  >{name}</Badge>
-                        </Grid>
-                    ))
-                  }
+                {pokemon.abilities.map(({ ability: { name } }) => (
+                  <Grid key={name}>
+                    <div
+                      style={{
+                        padding: "6px",
+                        background: `${
+                          pokeColorsType[pokemon.types[0].type.name]
+                        }`,
+                        borderRadius: "50px",
+                      }}
+                    >
+                      <span style={{ padding: "6px", fontSize: "13px" }}>
+                        {name}
+                      </span>
+                    </div>
+                  </Grid>
+                ))}
               </Grid.Container>
             </Container>
-            
-            <Spacer/>
+
+            <Spacer />
             <Container
               display="flex"
               alignItems="center"
@@ -220,15 +279,66 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                 width={80}
                 height={80}
               />
-
             </Container>
-            <Spacer/>
+
+            <Container>
+              <Text weight={"bold"} size={"$xl"} color={"#000"}>
+                Evolution chain
+              </Text>
+              <Spacer />
+              <Container
+                display="flex"
+                alignItems="center"
+                justify="space-between"
+              >
+                {pokemon.evolutionChain.map(({ id, name }) => (
+                          <Tooltip
+                          key={`${id}-${name}`}
+                          content={`${name}`}
+                          trigger="click"
+                          placement="top"
+                          css={{}}
+                          >
+                            <Image
+                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`}
+                            
+                            width={70}
+                            height={70}
+                            alt={`${name}`}
+                            style={
+                              pokemon.name !== name
+                                ? { filter: "grayscale(1) opacity(40%) ", cursor:'pointer' }
+                                : {cursor:'pointer'}
+                            }
+                          />
+                        </Tooltip>
+
+                ))}
+              </Container>
+              <Spacer />
+            </Container>
           </Grid.Container>
         </Grid>
+        <Spacer />
       </Grid.Container>
     </Layout>
   );
 };
+
+function evolutionChain(
+  chain: Chain,
+  evolutionChainList: Array<IevolutionChainList> = []
+) {
+  const url = chain.species.url.split("/");
+  const id = url[6];
+
+  evolutionChainList.push({ id, name: chain.species.name });
+  if (chain.evolves_to.length > 0) {
+    evolutionChain(chain.evolves_to[0], evolutionChainList);
+  }
+
+  return evolutionChainList;
+}
 
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
@@ -248,9 +358,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     `https://pokeapi.co/api/v2/pokemon/${id}`
   );
 
+  const { data: specie } = await pokeApi.get<IPokemonSpecies>(
+    `https://pokeapi.co/api/v2/pokemon-species/${id}`
+  );
+
+  const {
+    data: { chain },
+  } = await pokeApi.get<IpokemonChain>(specie.evolution_chain.url);
+
   return {
     props: {
-      pokemon: data,
+      pokemon: { ...data, evolutionChain: evolutionChain(chain) },
     },
   };
 };

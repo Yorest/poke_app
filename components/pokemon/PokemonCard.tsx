@@ -62,11 +62,11 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
               </Text>
 
               <Text size="$md" color="#9BA1A6" css={{ m: 0 }}>
-                {`HEIGHT: ${height}"`}
+                {`HEIGHT: ${(height/10)} m`}
               </Text>
 
               <Text size="$md" color="#9BA1A6" css={{ m: 0 }}>
-                {`WEIGHT: ${weight} lb`}
+                {`WEIGHT: ${(weight/10)} Kg`}
               </Text>
             </Row>
           </Grid.Container>
