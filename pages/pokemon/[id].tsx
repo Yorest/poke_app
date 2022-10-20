@@ -1,5 +1,5 @@
 import {
-  Badge,
+  Link,
   Button,
   Card,
   Container,
@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
 import React from "react";
 import { pokeApi } from "../../api";
 
@@ -30,8 +30,7 @@ interface Props {
   pokemon: IPokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {  
-
+const PokemonPage: NextPage<Props> = ({ pokemon }) => {
   return (
     <Layout title={`${pokemon.name}`}>
       <Grid.Container alignItems="center" direction="column">
@@ -49,8 +48,8 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
               justify="space-between"
               alignItems="center"
             >
-              <Link href={"/"}>
-                <a>
+              <NextLink href="/" passHref>
+                <Link>
                   <Button
                     auto
                     color="gradient"
@@ -69,11 +68,15 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                   >
                     Back
                   </Button>
-                </a>
-              </Link>
-              <Button auto color="gradient" rounded bordered ghost>
-                Favorito
-              </Button>
+                </Link>
+              </NextLink>
+              <NextLink href="/favorites" passHref>
+                <Link>
+                  <Button auto color="gradient" rounded bordered ghost>
+                    {`Guardar en Favoritos`}
+                  </Button>
+                </Link>
+              </NextLink>
             </Container>
             <Spacer />
             <Container display="flex" justify="center">
@@ -100,7 +103,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
             borderBottom: `15px solid ${
               pokeColorsType[pokemon.types[0].type.name]
             }`,
-            borderRadius: "5px",
+            borderRadius: "15px",
           }}
         >
           <Grid.Container>
@@ -110,12 +113,12 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
               alignItems="center"
               justify="center"
             >
-              <Text color="#697177">{`#${pokemon.id}`}</Text>
+              <Text size={"$xl"} color="#697177">{`#${pokemon.id}`}</Text>
               <Spacer />
               <Text
                 h1
                 weight={"bold"}
-                size={"$4xl"}
+                size={"$5xl"}
                 transform="capitalize"
                 color="#000"
               >{` ${pokemon.name}`}</Text>
@@ -236,7 +239,13 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         borderRadius: "50px",
                       }}
                     >
-                      <span style={{ padding: "6px", fontSize: "13px", color: "white" }}>
+                      <span
+                        style={{
+                          padding: "6px",
+                          fontSize: "16px",
+                          color: "white",
+                        }}
+                      >
                         {name}
                       </span>
                     </div>
@@ -291,27 +300,28 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                 justify="space-between"
               >
                 {pokemon.evolutionChain.map(({ id, name }) => (
-                          <Tooltip
-                          key={`${id}-${name}`}
-                          content={`${name}`}
-                          trigger="click"
-                          placement="top"
-                          css={{}}
-                          >
-                            <Image
-                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-                            
-                            width={70}
-                            height={70}
-                            alt={`${name}`}
-                            style={
-                              pokemon.name !== name
-                                ? { filter: "grayscale(1) opacity(40%) ", cursor:'pointer' }
-                                : {cursor:'pointer'}
+                  <Tooltip
+                    key={`${id}-${name}`}
+                    content={`${name}`}
+                    trigger="click"
+                    placement="top"
+                    css={{}}
+                  >
+                    <Image
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+                      width={70}
+                      height={70}
+                      alt={`${name}`}
+                      style={
+                        pokemon.name !== name
+                          ? {
+                              filter: "grayscale(1) opacity(40%) ",
+                              cursor: "pointer",
                             }
-                          />
-                        </Tooltip>
-
+                          : { cursor: "pointer" }
+                      }
+                    />
+                  </Tooltip>
                 ))}
               </Container>
               <Spacer />
@@ -333,9 +343,9 @@ function evolutionChain(
 
   evolutionChainList.push({ id, name: chain.species.name });
   if (chain.evolves_to.length > 0) {
-    chain.evolves_to.forEach((chain)=>{  
+    chain.evolves_to.forEach((chain) => {
       evolutionChain(chain, evolutionChainList);
-    })
+    });
   }
 
   return evolutionChainList;
