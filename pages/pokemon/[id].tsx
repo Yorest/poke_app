@@ -236,7 +236,7 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
                         borderRadius: "50px",
                       }}
                     >
-                      <span style={{ padding: "6px", fontSize: "13px" }}>
+                      <span style={{ padding: "6px", fontSize: "13px", color: "white" }}>
                         {name}
                       </span>
                     </div>
