@@ -13,6 +13,7 @@ import { GetStaticProps, GetStaticPaths, NextPage } from "next";
 import Image from "next/image";
 import NextLink from "next/link";
 import React, { useState } from "react";
+import { pokeApi } from "../../api";
 
 import { Layout } from "../../components/layouts";
 import {
@@ -20,16 +21,16 @@ import {
   Chain,
   IevolutionChainList,
 } from "../../interfaces";
-import { localFavorites } from "../../utils";
+import { getPokemonInfo, localFavorites } from "../../utils";
 
 import { pokeColorsType } from "../../utils/colors";
-import { getPokemonInfo } from "../../utils/getPokemonInfo";
+import { PokemonListResponse } from '../../interfaces/pokemon-lists';
 
 interface Props {
   pokemon: IPokemon;
 }
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => {
+const PokemonByNamePage : NextPage<Props> = ({ pokemon }) => {
   const [isInFavorites, setIsInFavorites] = useState(
     localFavorites.isInFavorites(pokemon.id)
   );
@@ -41,17 +42,8 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
 
   return (
     <Layout title={`${pokemon.name}`}>
-      <Grid.Container alignItems="center" direction="column">
-        <Grid
-          xs={12}
-          sm={5}
-          md={4}
-          xl={3}
-          css={{ marginTop: "20px", width: "100%", marginBottom: "-70px" }}
-        >
-          <Grid.Container>
-            <Container
-              css={{ width: "100%" }}
+                  <Container
+              css={{ width: "100%",marginTop: "20px", }}
               display="flex"
               justify="space-between"
               alignItems="center"
@@ -80,19 +72,29 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
               </NextLink>
               {/* <NextLink href="/favorites" passHref>
                 <Link> */}
-              <Button
-                auto
-                color="gradient"
-                rounded
-                bordered={!isInFavorites}
-                ghost={!isInFavorites}
-                onClick={onToggleFavorite}
-              >
-                {isInFavorites ? `in favorites` : `save to favorites`}
-              </Button>
-              {/* </Link>
+                  <Button
+                    auto
+                    color="gradient"
+                    rounded
+                    bordered={!isInFavorites}
+                    ghost={!isInFavorites}
+                    onClick={onToggleFavorite}
+                  >
+                    {isInFavorites ? `in favorites` : `save to favorites`}
+                  </Button>
+                {/* </Link>
               </NextLink> */}
             </Container>
+
+      <Grid.Container alignItems="center" direction="column">
+        <Grid
+          xs={12}
+          sm={5}
+          md={4}
+          xl={3}
+          css={{  width: "100%", marginBottom: "-70px" }}
+        >
+          <Grid.Container>
             <Spacer />
             <Container display="flex" justify="center">
               <Image
@@ -349,21 +351,26 @@ const PokemonPage: NextPage<Props> = ({ pokemon }) => {
   );
 };
 
+
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const pokemonListId = [...Array(151)].map((v, i) => `${i + 1}`);
+
+  const { data } = await pokeApi.get<PokemonListResponse>(
+    "https://pokeapi.co/api/v2/pokemon?limit=151"
+  );
+  const pokemonListName: string[] = data.results.map(pokemon => pokemon.name)
 
   return {
-    paths: pokemonListId.map((id) => ({ params: { id } })),
+    paths: pokemonListName.map((name) => ({ params: { name } })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params as { id: string };
+  const { name } = params as { name: string };
 
-  const pokemon = await getPokemonInfo(id)
+  const pokemon = await getPokemonInfo(name)
 
   return {
     props: {
@@ -372,4 +379,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-export default PokemonPage;
+export default PokemonByNamePage ;
