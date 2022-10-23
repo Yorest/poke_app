@@ -1,15 +1,15 @@
 import { Container } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
-import { Sprites } from "../../interfaces";
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
 
-interface Props {
-  sprites: Sprites; 
-  name: string
-}
+export const PokemonInfoCardSprites = () => {
 
-export const PokemonInfoCardSprites = ({sprites, name}: Props) => {
+  const {pokemon: {sprites, name}} = useContext(pokemonContext)
+
+
   return (
     <Container display="flex" alignItems="center" justify="space-between">
       <Image

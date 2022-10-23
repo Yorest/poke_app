@@ -29,10 +29,10 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
           background: `linear-gradient(180deg, ${pokeColorsType[type]} 0%, rgba(255,255,255,1) 50%)`,
           borderBottom: `15px solid ${pokeColorsType[type]}`,
         }}
-        onClick={onClick}
+        onPress={onClick}
       >
         <Card.Body css={{ p: 1 }}>
-          <Card.Image src={img} width="100%" height={250} alt={name} />
+          <Card.Image showSkeleton={true} src={img} width="100%" height={250} alt={name} />
         </Card.Body>
         <Card.Footer>
           <Grid.Container>

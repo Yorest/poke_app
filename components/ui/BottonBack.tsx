@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 import NextLink from "next/link";
-import { Button, Link } from "@nextui-org/react"
-import Image from 'next/image';
+import { Button, Link } from "@nextui-org/react";
+import Image from "next/image";
 
 export const BottonBack = () => {
   return (
@@ -27,5 +27,5 @@ export const BottonBack = () => {
         </Button>
       </Link>
     </NextLink>
-  )
-}
+  );
+};

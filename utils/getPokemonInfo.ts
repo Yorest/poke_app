@@ -32,9 +32,17 @@ export const getPokemonInfo = async (nameOrId: string) => {
 
   const {
     data: { chain },
-  } = await pokeApi.get<IpokemonChain>(specie.evolution_chain.url);
+  } = await pokeApi.get<IpokemonChain>(`${specie.evolution_chain.url}`);
 
-  
-
-  return { ...data, evolutionChain: evolutionChain(chain) }
+  return {
+    abilities: data.abilities,
+    height: data.height,
+    id: data.id,
+    name: data.name,
+    species: data.species,
+    sprites: data.sprites,
+    stats: data.stats,
+    types: data.types,
+    weight: data.weight,
+    evolutionChain: evolutionChain(chain) }
 }

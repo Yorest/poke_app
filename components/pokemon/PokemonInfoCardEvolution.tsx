@@ -1,15 +1,16 @@
 import { Container, Spacer, Text, Tooltip } from '@nextui-org/react'
 import Image from 'next/image';
 import React from 'react'
-import { IevolutionChainList } from '../../interfaces';
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  evolutionChain: IevolutionChainList[];
-  id: number;
-  name: string;
-}
 
-export const PokemonInfoCardEvolution = ({evolutionChain, id, name}: Props) => {
+export const PokemonInfoCardEvolution = () => {
+
+  const {pokemon: {evolutionChain, name}} = useContext(pokemonContext)
+
+
+
   return (
     <Container>
               <Text weight={"bold"} size={"$xl"} color={"#000"}>
@@ -21,21 +22,21 @@ export const PokemonInfoCardEvolution = ({evolutionChain, id, name}: Props) => {
                 alignItems="center"
                 justify="space-between"
               >
-                {evolutionChain.map(({ id, name }) => (
+                {evolutionChain.map((evolution) => (
                   <Tooltip
-                    key={`${id}-${name}`}
-                    content={`${name}`}
+                    key={`${evolution.id}-${evolution.name}`}
+                    content={`${evolution.name}`}
                     trigger="click"
                     placement="top"
                     css={{}}
                   >
                     <Image
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
+                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evolution.id}.png`}
                       width={70}
                       height={70}
-                      alt={`${name}`}
+                      alt={`${evolution.name}`}
                       style={
-                        name !== name
+                        evolution.name !== name
                           ? {
                               filter: "grayscale(1) opacity(40%) ",
                               cursor: "pointer",

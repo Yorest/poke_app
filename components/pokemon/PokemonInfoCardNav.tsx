@@ -1,14 +1,14 @@
 import { Container } from "@nextui-org/react";
-import { FC, ReactNode } from "react";
+import { useContext } from "react";
 
 import { BottonBack, ButtonFavorite } from "../ui/";
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  id: number;
-  children?: ReactNode;
-}
 
-export const PokemonInfoCardNav: FC<Props> = ({ id }) => {
+export const PokemonInfoCardNav = () => {
+
+  const {pokemon: {id}} = useContext(pokemonContext)
+
   return (
     <Container
       css={{ width: "100%", marginTop: "20px" }}
@@ -17,7 +17,7 @@ export const PokemonInfoCardNav: FC<Props> = ({ id }) => {
       alignItems="center"
     >
       <BottonBack />
-      <ButtonFavorite id={id} />
+      <ButtonFavorite />
     </Container>
   );
 };

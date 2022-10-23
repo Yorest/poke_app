@@ -1,13 +1,16 @@
 import { Grid, Spacer, Container } from '@nextui-org/react'
 import Image from 'next/image'
 import React from 'react'
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  url: string
-  alt: string
-}
 
-export const PokemonInfoCardImage= ({url, alt}: Props) => {
+
+export const PokemonInfoCardImage= () => {
+
+  const {pokemon: {sprites, name}} = useContext(pokemonContext)
+
+
   return (
     <Grid
     xs={12}
@@ -20,8 +23,8 @@ export const PokemonInfoCardImage= ({url, alt}: Props) => {
       <Spacer />
       <Container display="flex" justify="center">
         <Image
-          src={ url }
-          alt={alt}
+          src={ sprites.other?.dream_world.front_default || "" }
+          alt={`pokemon-${name}`}
           width={250}
           height={250}
         />

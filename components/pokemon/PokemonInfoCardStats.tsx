@@ -1,12 +1,14 @@
 import { Container, Grid, Spacer, Progress, Text } from '@nextui-org/react'
 import React from 'react'
-import { Stat } from '../../interfaces'
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  stats: Stat[];
-}
 
-export const PokemonInfoCardStats = ({stats}: Props) => {
+export const PokemonInfoCardStats = () => {
+
+
+  const {pokemon: {stats}} = useContext(pokemonContext)
+
   return (
     <Container>
     <Text weight={"bold"} size={"$xl"} color={"#000"}>

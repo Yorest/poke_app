@@ -1,14 +1,15 @@
 import { Container, Spacer, Grid, Text } from '@nextui-org/react'
 import React from 'react'
-import { Ability } from '../../interfaces';
 import { pokeColorsType } from '../../utils'
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  abilities: Ability[];
-  PokemonType: string
-}
 
-export const PokemonInfoCardAbilities = ({abilities, PokemonType}: Props) => {
+export const PokemonInfoCardAbilities = () => {
+
+  const {pokemon: {abilities, types}} = useContext(pokemonContext)
+
+
   return (
     <Container>
               <Spacer />
@@ -22,7 +23,7 @@ export const PokemonInfoCardAbilities = ({abilities, PokemonType}: Props) => {
                       style={{
                         padding: "6px",
                         background: `${
-                          pokeColorsType[PokemonType]
+                          pokeColorsType[types[0].type.name]
                         }`,
                         borderRadius: "50px",
                       }}

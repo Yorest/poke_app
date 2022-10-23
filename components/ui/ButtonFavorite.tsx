@@ -1,21 +1,12 @@
+import React, { useContext  } from 'react'
+
 import { Button } from '@nextui-org/react'
-import React, { useState } from 'react'
-import { localFavorites } from "../../utils";
 
-interface Props {
-  id: number
-}
+import { pokemonContext } from '../pokemon/';
 
-export const ButtonFavorite = ({id}: Props) => {
+export const ButtonFavorite = () => {  
 
-  const [isInFavorites, setIsInFavorites] = useState(
-    localFavorites.isInFavorites(id)
-  );
-
-  const onToggleFavorite = () => {
-    localFavorites.toggleFavorite(id);
-    setIsInFavorites(!isInFavorites);
-  };
+  const {isInFavorites, onToggleFavorite} = useContext(pokemonContext)
   
   return (
     <Button
@@ -24,7 +15,7 @@ export const ButtonFavorite = ({id}: Props) => {
       rounded
       bordered={!isInFavorites}
       ghost={!isInFavorites}
-      onClick={onToggleFavorite}
+      onPress={onToggleFavorite}
     >
       {isInFavorites ? `in favorites` : `save to favorites`}
     </Button>

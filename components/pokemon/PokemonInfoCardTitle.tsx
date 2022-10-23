@@ -2,17 +2,15 @@ import { Container, Spacer, Grid, Card, Text } from '@nextui-org/react'
 import Image from 'next/image';
 import React from 'react'
 import { Type } from '../../interfaces';
+import { useContext } from 'react';
+import { pokemonContext } from './PokemonInfoCard';
 
-interface Props {
-  id: number;
-  name: string;
-  types: Type[];
-  weight: number;
-  height: number;
-}
+export const PokemonInfoCardTitle = () => {
 
 
-export const PokemonInfoCardTitle = ({id, name, types, weight, height}: Props) => {
+  const {pokemon: {id, name, types, weight, height}} = useContext(pokemonContext)
+
+
   return (
     <>
 <Container

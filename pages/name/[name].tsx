@@ -9,8 +9,20 @@ import { IPokemon } from "../../interfaces";
 import { PokemonListResponse } from "../../interfaces/pokemon-lists";
 
 import { Layout } from "../../components/layouts";
-import { PokemonInfoCard } from "../../components/pokemon";
-
+import {
+  PokemonInfoCard,
+  PokemonInfoCardAbilities,
+  PokemonInfoCardContainer,
+  PokemonInfoCardDetail,
+  PokemonInfoCardEvolution,
+  PokemonInfoCardImage,
+  PokemonInfoCardNav,
+  PokemonInfoCardSprites,
+  PokemonInfoCardStats,
+  PokemonInfoCardTitle,
+} from "../../components/pokemon";
+import { Spacer } from "@nextui-org/react";
+import { useEffect } from 'react';
 
 interface Props {
   pokemon: IPokemon;
@@ -21,6 +33,10 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
     localFavorites.isInFavorites(pokemon.id)
   );
 
+  useEffect(() => {
+    setIsInFavorites(localFavorites.isInFavorites(pokemon.id));
+  }, [pokemon.id]);
+
   const onToggleFavorite = () => {
     localFavorites.toggleFavorite(pokemon.id);
     setIsInFavorites(!isInFavorites);
@@ -28,7 +44,24 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
 
   return (
     <Layout title={`${pokemon.name}`}>
-      <PokemonInfoCard pokemon={pokemon} />
+      <PokemonInfoCard
+        pokemon={pokemon}
+        onToggleFavorite={onToggleFavorite}
+        isInFavorites={isInFavorites}
+      >
+        <PokemonInfoCardNav />
+        <PokemonInfoCardDetail>
+          <PokemonInfoCardImage />
+          <PokemonInfoCardContainer>
+            <PokemonInfoCardTitle />
+            <PokemonInfoCardStats />
+            <PokemonInfoCardAbilities />
+            <PokemonInfoCardSprites />
+            <PokemonInfoCardEvolution />
+          </PokemonInfoCardContainer>
+        </PokemonInfoCardDetail>
+      </PokemonInfoCard>
+      <Spacer />
     </Layout>
   );
 };
