@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { GetStaticProps, GetStaticPaths, NextPage } from "next";
+import { Spacer } from "@nextui-org/react";
 
 import { pokeApi } from "../../api";
 import { getPokemonInfo, localFavorites } from "../../utils";
@@ -21,8 +22,7 @@ import {
   PokemonInfoCardStats,
   PokemonInfoCardTitle,
 } from "../../components/pokemon";
-import { Spacer } from "@nextui-org/react";
-import { useEffect } from 'react';
+
 
 interface Props {
   pokemon: IPokemon;
@@ -32,10 +32,6 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
   const [isInFavorites, setIsInFavorites] = useState(
     localFavorites.isInFavorites(pokemon.id)
   );
-
-  useEffect(() => {
-    setIsInFavorites(localFavorites.isInFavorites(pokemon.id));
-  }, [pokemon.id]);
 
   const onToggleFavorite = () => {
     localFavorites.toggleFavorite(pokemon.id);
@@ -76,7 +72,7 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
   return {
     paths: pokemonListName.map((name) => ({ params: { name } })),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
@@ -84,6 +80,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { name } = params as { name: string };
 
   const pokemon = await getPokemonInfo(name);
+
+  if(!pokemon){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props: {
