@@ -1,4 +1,4 @@
-import { Container, Spacer, Text, Tooltip } from '@nextui-org/react'
+import { Container, Spacer, Text, Tooltip, Row, Grid } from '@nextui-org/react';
 import Image from 'next/image';
 import React from 'react'
 import { useContext } from 'react';
@@ -20,15 +20,13 @@ export const PokemonInfoCardEvolution = () => {
               <Container
                 display="flex"
                 alignItems="center"
-                justify="space-between"
+                justify="space-around"
+                wrap='nowrap'
+                css={{p:0}}
               >
                 {evolutionChain.map((evolution) => (
-                  <Tooltip
-                    key={`${evolution.id}-${evolution.name}`}
-                    content={`${evolution.name}`}
-                    trigger="click"
-                    placement="top"
-                    css={{}}
+                  <Grid
+                    key={`${evolution.id}-${evolution.name}`}                                     
                   >
                     <Image
                       src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${evolution.id}.png`}
@@ -44,7 +42,8 @@ export const PokemonInfoCardEvolution = () => {
                           : { cursor: "pointer" }
                       }
                     />
-                  </Tooltip>
+                    <Text color='gray' >{`${evolution.name}`}</Text>
+                  </Grid>
                 ))}
               </Container>
               <Spacer />

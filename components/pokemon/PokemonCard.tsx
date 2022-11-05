@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, Grid,Text,Row } from "@nextui-org/react";
+import { Card, Grid, Text, Row, Spacer } from "@nextui-org/react";
 import Image from "next/image";
 
 import { SmallPokemon } from "../../interfaces/pokemon-lists";
@@ -11,14 +11,14 @@ interface Props {
 }
 
 export const PokemonCard: FC<Props> = ({ pokemon }) => {
-
-  const  {id, name, img, type, height, hp, weight } = pokemon;
+  const { id, name, img, type, height, hp, weight } = pokemon;
 
   const router = useRouter();
 
   const onClick = () => {
-    router.push(`/name/${name}`)
-  }
+    router.push(`/name/${name}`);
+  };
+  
 
   return (
     <Grid xs={12} sm={6} md={4} xl={3}>
@@ -32,19 +32,22 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
         onPress={onClick}
       >
         <Card.Body css={{ p: 1 }}>
-          <Card.Image showSkeleton={true} src={img} width="100%" height={250} alt={name} />
+          <Card.Image
+            showSkeleton={true}
+            src={img}
+            width="100%"
+            height={250}
+            alt={name}
+          />
         </Card.Body>
         <Card.Footer>
           <Grid.Container>
             <Row gap={1} justify="space-between" align="center">
-              <Text weight="bold" size="$xl" color="#697177">
-                # {id}
+              <Row gap={1} justify="flex-start" align="center" css={{ m: 0 }}>
+              <Text  size="$xl" color="#697177" css={{ pr: 8 }}>
+                # {id.toString().padStart(3, '0')}
               </Text>
-
-              <Image src={`/${type}.svg`} alt={name} width={112} height={30} />
-            </Row>
-
-            <Row gap={1} justify="center" align="center">
+              
               <Text
                 size="$3xl"
                 weight="bold"
@@ -54,6 +57,9 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
               >
                 {name}
               </Text>
+              </Row>
+
+              <Image src={`/${type}.svg`} alt={name} width={90} height={30} />
             </Row>
 
             <Row gap={1} justify="space-between" align="center">
@@ -62,11 +68,11 @@ export const PokemonCard: FC<Props> = ({ pokemon }) => {
               </Text>
 
               <Text size="$md" color="#9BA1A6" css={{ m: 0 }}>
-                {`HEIGHT: ${(height/10)} m`}
+                {`HEIGHT: ${height / 10} m`}
               </Text>
 
               <Text size="$md" color="#9BA1A6" css={{ m: 0 }}>
-                {`WEIGHT: ${(weight/10)} Kg`}
+                {`WEIGHT: ${weight / 10} Kg`}
               </Text>
             </Row>
           </Grid.Container>

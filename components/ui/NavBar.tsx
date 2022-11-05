@@ -19,7 +19,7 @@ export const NavBar = () => {
         alignItems: "center",
         justifyContent: "start",
         padding: "20px 20px",
-        backgroundColor: theme?.colors.gray50.value,
+        
       }}
     >
       <NextLink href="/" passHref>
